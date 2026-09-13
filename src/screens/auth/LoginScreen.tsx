@@ -8,9 +8,11 @@ import {
   ScrollView,
   useWindowDimensions,
   StatusBar,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../assets/images';
+import { useAppInsets } from '../../hooks/useAppInsets';
 import { CustomInput } from '../../components/common/CustomInput';
 import { CustomButton } from '../../components/common/CustomButton';
 import { Checkbox } from '../../components/common/Checkbox';
@@ -21,11 +23,13 @@ import {
   ShipIllustration,
 } from '../../components/icons/VectorIcons';
 import { GlobeBadge } from '../../components/icons/GlobeBadge';
-import { colors, typography, spacing, borderRadius, shadows } from '../../theme';
+import { colors, typography, spacing, borderRadius } from '../../theme';
 import { useAuth } from '../../context/AuthContext';
 
 export const LoginScreen: React.FC = () => {
   const { login } = useAuth();
+  const insets = useAppInsets();
+
   const [email, setEmail] = useState('grow@vizoroz.com');
   const [password, setPassword] = useState('GreenGlobal2025!');
   const [showPassword, setShowPassword] = useState(false);
@@ -45,7 +49,13 @@ export const LoginScreen: React.FC = () => {
   };
 
   const renderHeroBanner = () => (
-    <View style={styles.heroPanel}>
+    <View
+      style={[
+        styles.heroPanel,
+        isLandscapeOrWide ? styles.heroPanelLandscape : styles.heroPanelPortrait,
+        { paddingTop: insets.top + (isLandscapeOrWide ? spacing.xl : spacing.base) },
+      ]}
+    >
       {/* Subtle angled background accents */}
       <View style={styles.stripePatternContainer}>
         <View style={[styles.diagonalStripe, { top: -40, left: 20 }]} />
@@ -55,9 +65,9 @@ export const LoginScreen: React.FC = () => {
 
       {/* App Globe Badge and Ship illustration */}
       <View style={styles.heroGraphicRow}>
-        <GlobeBadge size={58} />
+        <GlobeBadge size={54} />
         <View style={styles.shipIllustrationWrapper}>
-          <ShipIllustration width={100} height={65} />
+          <ShipIllustration width={95} height={60} />
         </View>
       </View>
 
@@ -74,7 +84,13 @@ export const LoginScreen: React.FC = () => {
   );
 
   const renderLoginForm = () => (
-    <View style={styles.formPanel}>
+    <View
+      style={[
+        styles.formPanel,
+        isLandscapeOrWide ? styles.formPanelLandscape : styles.formPanelPortrait,
+        { paddingBottom: Math.max(insets.bottom, spacing.md) + spacing.base },
+      ]}
+    >
       {/* Brand Header */}
       <View style={styles.brandHeader}>
         <Image
@@ -145,79 +161,101 @@ export const LoginScreen: React.FC = () => {
   );
 
   return (
-    <SafeAreaView style={styles.safeContainer}>
+    <View style={styles.rootContainer}>
       <StatusBar barStyle="light-content" />
-      <ScrollView
-        contentContainerStyle={[
-          styles.scrollContent,
-          isLandscapeOrWide ? styles.scrollContentLandscape : null,
-        ]}
-        showsVerticalScrollIndicator={false}
-      >
+
+      {isLandscapeOrWide ? (
+        // Wide / Landscape View: Full screen edge-to-edge side-by-side
         <View
           style={[
-            styles.cardContainer,
-            isLandscapeOrWide ? styles.cardContainerLandscape : styles.cardContainerPortrait,
+            styles.landscapeContainer,
+            {
+              paddingLeft: insets.left,
+              paddingRight: insets.right,
+            },
           ]}
         >
-          {isLandscapeOrWide ? (
-            <>
-              {renderHeroBanner()}
-              {renderLoginForm()}
-            </>
-          ) : (
-            <>
-              {renderHeroBanner()}
-              {renderLoginForm()}
-            </>
-          )}
+          {renderHeroBanner()}
+          <ScrollView
+            style={styles.landscapeFormScroll}
+            contentContainerStyle={styles.landscapeFormScrollContent}
+            showsVerticalScrollIndicator={false}
+          >
+            {renderLoginForm()}
+          </ScrollView>
         </View>
-      </ScrollView>
-    </SafeAreaView>
+      ) : (
+        // Mobile Portrait View: Full screen width and height
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          style={styles.keyboardContainer}
+        >
+          <ScrollView
+            style={styles.portraitScrollView}
+            contentContainerStyle={styles.portraitScrollContent}
+            showsVerticalScrollIndicator={false}
+            bounces={false}
+          >
+            {renderHeroBanner()}
+            {renderLoginForm()}
+          </ScrollView>
+        </KeyboardAvoidingView>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeContainer: {
+  rootContainer: {
     flex: 1,
-    backgroundColor: '#262D35',
-  },
-  scrollContent: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: spacing.md,
-  },
-  scrollContentLandscape: {
-    padding: spacing.xl,
-  },
-  cardContainer: {
     backgroundColor: '#FFFFFF',
-    borderRadius: 20,
-    overflow: 'hidden',
-    ...shadows.card,
   },
-  cardContainerLandscape: {
+  keyboardContainer: {
+    flex: 1,
+  },
+  portraitScrollView: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  portraitScrollContent: {
+    flexGrow: 1,
+  },
+  landscapeContainer: {
+    flex: 1,
     flexDirection: 'row',
     width: '100%',
-    maxWidth: 960,
-    minHeight: 520,
+    height: '100%',
+    backgroundColor: '#FFFFFF',
   },
-  cardContainerPortrait: {
-    flexDirection: 'column',
-    width: '100%',
-    maxWidth: 440,
+  landscapeFormScroll: {
+    flex: 1.2,
+    backgroundColor: '#FFFFFF',
+  },
+  landscapeFormScrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
   },
   heroPanel: {
-    flex: 1,
     backgroundColor: '#0E7490',
-    padding: spacing.xl,
-    justifyContent: 'center',
-    alignItems: 'center',
     position: 'relative',
     overflow: 'hidden',
-    minHeight: 240,
   },
+  heroPanelPortrait: {
+    width: '100%',
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  heroPanelLandscape: {
+    flex: 1,
+    height: '100%',
+    paddingHorizontal: spacing.xl,
+    paddingBottom: spacing.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
   stripePatternContainer: {
     position: 'absolute',
     top: 0,
@@ -274,8 +312,15 @@ const styles = StyleSheet.create({
   formPanel: {
     flex: 1,
     backgroundColor: '#FFFFFF',
+  },
+  formPanelPortrait: {
+    width: '100%',
     paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.xl,
+    paddingTop: spacing.xl,
+  },
+  formPanelLandscape: {
+    paddingHorizontal: spacing['2xl'],
+    paddingTop: spacing.xl,
     justifyContent: 'center',
   },
   brandHeader: {

@@ -497,6 +497,336 @@ export const ShipIllustration: React.FC<{ width?: number; height?: number }> = (
   );
 };
 
+/**
+ * Clock Icon for Pending Metric
+ */
+export const ClockIcon: React.FC<IconProps> = ({ size = 18, color = '#2563EB' }) => {
+  return (
+    <View
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        borderWidth: 1.8,
+        borderColor: color,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <View
+        style={{
+          width: 1.6,
+          height: size * 0.32,
+          backgroundColor: color,
+          borderRadius: 1,
+          position: 'absolute',
+          top: size * 0.18,
+        }}
+      />
+      <View
+        style={{
+          width: size * 0.24,
+          height: 1.6,
+          backgroundColor: color,
+          borderRadius: 1,
+          position: 'absolute',
+          top: size * 0.44,
+          right: size * 0.22,
+        }}
+      />
+    </View>
+  );
+};
+
+/**
+ * Check Circle Icon for Approved Metric
+ */
+export const CheckCircleIcon: React.FC<IconProps> = ({ size = 18, color = '#16A34A' }) => {
+  return (
+    <View
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        borderWidth: 1.8,
+        borderColor: color,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <View
+        style={{
+          width: size * 0.45,
+          height: size * 0.25,
+          borderBottomWidth: 1.8,
+          borderLeftWidth: 1.8,
+          borderColor: color,
+          transform: [{ rotate: '-45deg' }, { translateY: -1 }],
+        }}
+      />
+    </View>
+  );
+};
+
+/**
+ * Times Circle Icon for Rejected Metric
+ */
+export const TimesCircleIcon: React.FC<IconProps> = ({ size = 18, color = '#EF4444' }) => {
+  return (
+    <View
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        borderWidth: 1.8,
+        borderColor: color,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+      }}
+    >
+      <View
+        style={{
+          width: size * 0.5,
+          height: 1.8,
+          backgroundColor: color,
+          borderRadius: 1,
+          transform: [{ rotate: '45deg' }],
+          position: 'absolute',
+        }}
+      />
+      <View
+        style={{
+          width: size * 0.5,
+          height: 1.8,
+          backgroundColor: color,
+          borderRadius: 1,
+          transform: [{ rotate: '-45deg' }],
+          position: 'absolute',
+        }}
+      />
+    </View>
+  );
+};
+
+/**
+ * Requote Refresh Icon for Requoted Metric
+ */
+export const RequoteIcon: React.FC<IconProps> = ({ size = 18, color = '#D97706' }) => {
+  return (
+    <View
+      style={{
+        width: size,
+        height: size,
+        borderRadius: size / 2,
+        borderWidth: 1.8,
+        borderTopColor: 'transparent',
+        borderColor: color,
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        transform: [{ rotate: '-25deg' }],
+      }}
+    >
+      <View
+        style={{
+          position: 'absolute',
+          top: -2,
+          right: size * 0.1,
+          width: 0,
+          height: 0,
+          borderLeftWidth: 3,
+          borderRightWidth: 3,
+          borderBottomWidth: 4,
+          borderLeftColor: 'transparent',
+          borderRightColor: 'transparent',
+          borderBottomColor: color,
+          transform: [{ rotate: '45deg' }],
+        }}
+      />
+    </View>
+  );
+};
+
+/**
+ * Calendar Icon for Dates
+ */
+export const CalendarIcon: React.FC<IconProps> = ({ size = 16, color = '#64748B' }) => {
+  return (
+    <View style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}>
+      <View
+        style={{
+          width: size * 0.9,
+          height: size * 0.85,
+          borderRadius: 3,
+          borderWidth: 1.4,
+          borderColor: color,
+          overflow: 'hidden',
+        }}
+      >
+        <View style={{ height: 3.5, backgroundColor: color }} />
+        <View style={{ flex: 1, padding: 2, flexDirection: 'row', flexWrap: 'wrap', gap: 1.5 }}>
+          <View style={{ width: 2, height: 2, backgroundColor: color, borderRadius: 0.5 }} />
+          <View style={{ width: 2, height: 2, backgroundColor: color, borderRadius: 0.5 }} />
+          <View style={{ width: 2, height: 2, backgroundColor: color, borderRadius: 0.5 }} />
+          <View style={{ width: 2, height: 2, backgroundColor: color, borderRadius: 0.5 }} />
+        </View>
+      </View>
+    </View>
+  );
+};
+
+/**
+ * Edit Pen Icon
+ */
+export const EditPenIcon: React.FC<IconProps> = ({ size = 16, color = '#D97706' }) => {
+  return (
+    <View
+      style={{
+        width: size,
+        height: size,
+        justifyContent: 'center',
+        alignItems: 'center',
+        transform: [{ rotate: '45deg' }],
+      }}
+    >
+      <View
+        style={{
+          width: size * 0.35,
+          height: size * 0.75,
+          borderWidth: 1.4,
+          borderColor: color,
+          borderRadius: 2,
+        }}
+      />
+      <View
+        style={{
+          width: 0,
+          height: 0,
+          borderLeftWidth: 2.5,
+          borderRightWidth: 2.5,
+          borderTopWidth: 3.5,
+          borderLeftColor: 'transparent',
+          borderRightColor: 'transparent',
+          borderTopColor: color,
+        }}
+      />
+    </View>
+  );
+};
+
+/**
+ * Close 'X' Icon
+ */
+export const CloseIcon: React.FC<IconProps> = ({ size = 16, color = '#FFFFFF' }) => {
+  return (
+    <View style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}>
+      <View
+        style={{
+          position: 'absolute',
+          width: size * 0.75,
+          height: 2,
+          backgroundColor: color,
+          borderRadius: 1,
+          transform: [{ rotate: '45deg' }],
+        }}
+      />
+      <View
+        style={{
+          position: 'absolute',
+          width: size * 0.75,
+          height: 2,
+          backgroundColor: color,
+          borderRadius: 1,
+          transform: [{ rotate: '-45deg' }],
+        }}
+      />
+    </View>
+  );
+};
+
+/**
+ * Small Map Pin for Routing
+ */
+export const PinSmallIcon: React.FC<IconProps> = ({ size = 12, color = '#60A5FA' }) => {
+  return (
+    <View style={{ width: size, height: size, alignItems: 'center', justifyContent: 'center' }}>
+      <View
+        style={{
+          width: size * 0.75,
+          height: size * 0.75,
+          borderRadius: (size * 0.75) / 2,
+          backgroundColor: color,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <View style={{ width: size * 0.28, height: size * 0.28, borderRadius: 1.5, backgroundColor: '#FFFFFF' }} />
+      </View>
+    </View>
+  );
+};
+
+/**
+ * Filter Icon
+ */
+export const FilterIcon: React.FC<IconProps> = ({ size = 16, color = '#64748B' }) => {
+  return (
+    <View style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}>
+      <View style={{ width: size * 0.85, height: 1.8, backgroundColor: color, borderRadius: 1, marginBottom: 2.5 }} />
+      <View style={{ width: size * 0.55, height: 1.8, backgroundColor: color, borderRadius: 1, marginBottom: 2.5 }} />
+      <View style={{ width: size * 0.25, height: 1.8, backgroundColor: color, borderRadius: 1 }} />
+    </View>
+  );
+};
+
+/**
+ * Clipboard Check Header Icon
+ */
+export const ClipboardCheckIcon: React.FC<IconProps> = ({ size = 18, color = '#FFFFFF' }) => {
+  return (
+    <View style={{ width: size, height: size, justifyContent: 'center', alignItems: 'center' }}>
+      {/* Clip top */}
+      <View
+        style={{
+          width: size * 0.35,
+          height: size * 0.18,
+          borderRadius: 1.5,
+          borderWidth: 1.2,
+          borderColor: color,
+          marginBottom: -1,
+          zIndex: 2,
+          backgroundColor: '#15803D',
+        }}
+      />
+      {/* Board */}
+      <View
+        style={{
+          width: size * 0.8,
+          height: size * 0.82,
+          borderRadius: 2.5,
+          borderWidth: 1.5,
+          borderColor: color,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        {/* Checkmark inside */}
+        <View
+          style={{
+            width: size * 0.35,
+            height: size * 0.2,
+            borderBottomWidth: 1.5,
+            borderLeftWidth: 1.5,
+            borderColor: color,
+            transform: [{ rotate: '-45deg' }, { translateY: -0.5 }],
+          }}
+        />
+      </View>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
   porthole: {
     width: 4,
@@ -506,3 +836,4 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
 });
+

@@ -21,6 +21,7 @@ import { LocationChip } from './LocationChip';
 import { UserProfileCard } from './UserProfileCard';
 import { colors, typography, spacing, borderRadius } from '../../../theme';
 import { DashboardRoute } from '../../../types';
+import { useAppInsets } from '../../../hooks/useAppInsets';
 
 interface SidebarProps {
   currentRoute: DashboardRoute;
@@ -33,6 +34,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onNavigate,
   onCloseMobileDrawer,
 }) => {
+  const insets = useAppInsets();
+
   const [searchQuery, setSearchQuery] = useState('');
   const [isExportExpanded, setIsExportExpanded] = useState(false);
 
@@ -60,7 +63,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
     'ssr approval'.includes(searchQuery.toLowerCase().trim());
 
   return (
-    <View style={styles.container}>
+    <View
+      style={[
+        styles.container,
+        {
+          paddingTop: Math.max(insets.top, spacing.base),
+          paddingBottom: Math.max(insets.bottom, spacing.md),
+        },
+      ]}
+    >
+
       {/* Top Branding */}
       <View style={styles.header}>
         <Image

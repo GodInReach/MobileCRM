@@ -3,111 +3,95 @@ import {
   View,
   StyleSheet,
   useWindowDimensions,
-  TouchableOpacity,
   Modal,
   TouchableWithoutFeedback,
   StatusBar,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Sidebar } from './components/Sidebar';
 import { HomeScreen } from './HomeScreen';
 import { SsrApprovalScreen } from './SsrApprovalScreen';
 import { DashboardRoute } from '../../types';
 
 export const DashboardLayout: React.FC = () => {
-  const [currentRoute, setCurrentRoute] = useState<DashboardRoute>('Home');
+  const [currentRoute, setCurrentRoute] = useState<DashboardRoute>('SSR Approval');
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const { width, height } = useWindowDimensions();
 
   // Screen is considered landscape or wide if width > height or width >= 640
   const isLandscapeOrWide = width > height || width >= 640;
 
-  const renderContent = () => {
+  const handleOpenMenu = () => {
+    setIsMobileDrawerOpen(true);
+  };
+
+  const renderContent = (onOpenMenu?: () => void) => {
     switch (currentRoute) {
       case 'Home':
-        return <HomeScreen />;
+        return <HomeScreen onOpenMenu={onOpenMenu} />;
       case 'SSR Approval':
-        return <SsrApprovalScreen />;
+        return <SsrApprovalScreen onOpenMenu={onOpenMenu} />;
       default:
-        return <HomeScreen />;
+        return <SsrApprovalScreen onOpenMenu={onOpenMenu} />;
     }
   };
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <StatusBar barStyle="dark-content" />
-      <View style={styles.container}>
-        {isLandscapeOrWide ? (
-          // Landscape / Desktop / Tablet View (Exact match with Screenshot 2)
-          <View style={styles.sideBySideContainer}>
-            <Sidebar
-              currentRoute={currentRoute}
-              onNavigate={(route) => setCurrentRoute(route)}
-            />
-            <View style={styles.mainContentContainer}>
-              {renderContent()}
-            </View>
-          </View>
-        ) : (
-          // Portrait Mobile View (Responsive with drawer toggle)
-          <View style={styles.mobileContainer}>
-            {/* Top Bar with Brand Logo & Menu Toggle */}
-            <View style={styles.mobileTopBar}>
-              <TouchableOpacity
-                style={styles.mobileMenuBtn}
-                onPress={() => setIsMobileDrawerOpen(true)}
-                activeOpacity={0.7}
-              >
-                {/* 3-bar hamburger icon */}
-                <View style={styles.hamburgerBar} />
-                <View style={styles.hamburgerBar} />
-                <View style={styles.hamburgerBar} />
-              </TouchableOpacity>
-            </View>
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" />
 
-            {/* Main Content Area */}
-            <View style={styles.mobileMainContent}>
-              {renderContent()}
-            </View>
-
-            {/* Slide-in Mobile Drawer */}
-            <Modal
-              visible={isMobileDrawerOpen}
-              transparent
-              animationType="fade"
-              onRequestClose={() => setIsMobileDrawerOpen(false)}
-            >
-              <TouchableWithoutFeedback onPress={() => setIsMobileDrawerOpen(false)}>
-                <View style={styles.modalOverlay}>
-                  <TouchableWithoutFeedback>
-                    <View style={styles.modalSidebarWrapper}>
-                      <Sidebar
-                        currentRoute={currentRoute}
-                        onNavigate={(route) => {
-                          setCurrentRoute(route);
-                          setIsMobileDrawerOpen(false);
-                        }}
-                        onCloseMobileDrawer={() => setIsMobileDrawerOpen(false)}
-                      />
-                    </View>
-                  </TouchableWithoutFeedback>
-                </View>
-              </TouchableWithoutFeedback>
-            </Modal>
+      {isLandscapeOrWide ? (
+        // Landscape / Desktop / Tablet View
+        <View style={styles.sideBySideContainer}>
+          <Sidebar
+            currentRoute={currentRoute}
+            onNavigate={(route) => setCurrentRoute(route)}
+          />
+          <View style={styles.mainContentContainer}>
+            {renderContent()}
           </View>
-        )}
-      </View>
-    </SafeAreaView>
+        </View>
+      ) : (
+        // Portrait Mobile View
+        <View style={styles.mobileContainer}>
+          {/* Main Content Area */}
+          <View style={styles.mobileMainContent}>
+            {renderContent(handleOpenMenu)}
+          </View>
+
+          {/* Slide-in Mobile Drawer */}
+          <Modal
+            visible={isMobileDrawerOpen}
+            transparent
+            animationType="fade"
+            onRequestClose={() => setIsMobileDrawerOpen(false)}
+          >
+            <TouchableWithoutFeedback onPress={() => setIsMobileDrawerOpen(false)}>
+              <View style={styles.modalOverlay}>
+                <TouchableWithoutFeedback>
+                  <View style={styles.modalSidebarWrapper}>
+                    <Sidebar
+                      currentRoute={currentRoute}
+                      onNavigate={(route) => {
+                        setCurrentRoute(route);
+                        setIsMobileDrawerOpen(false);
+                      }}
+                      onCloseMobileDrawer={() => setIsMobileDrawerOpen(false)}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+            </TouchableWithoutFeedback>
+          </Modal>
+        </View>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#FFFFFF',
-  },
   container: {
     flex: 1,
+    backgroundColor: '#F8FAFC',
   },
   sideBySideContainer: {
     flex: 1,
@@ -119,34 +103,6 @@ const styles = StyleSheet.create({
   },
   mobileContainer: {
     flex: 1,
-    position: 'relative',
-  },
-  mobileTopBar: {
-    position: 'absolute',
-    top: 12,
-    left: 12,
-    zIndex: 20,
-  },
-  mobileMenuBtn: {
-    width: 42,
-    height: 42,
-    borderRadius: 8,
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  hamburgerBar: {
-    width: 20,
-    height: 2.2,
-    backgroundColor: '#334155',
-    borderRadius: 2,
-    marginVertical: 2,
   },
   mobileMainContent: {
     flex: 1,
@@ -157,8 +113,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   modalSidebarWrapper: {
-    width: 280,
+    width: 290,
     height: '100%',
     backgroundColor: '#FFFFFF',
   },
 });
+
