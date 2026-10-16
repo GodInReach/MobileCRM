@@ -26,7 +26,11 @@ import { GlobeBadge } from '../../components/icons/GlobeBadge';
 import { colors, typography, spacing, borderRadius } from '../../theme';
 import { useAuth } from '../../context/AuthContext';
 
-export const LoginScreen: React.FC = () => {
+interface LoginScreenProps {
+  onForgotPassword?: () => void;
+}
+
+export const LoginScreen: React.FC<LoginScreenProps> = ({ onForgotPassword }) => {
   const { login } = useAuth();
   const insets = useAppInsets();
 
@@ -131,7 +135,13 @@ export const LoginScreen: React.FC = () => {
           checked={rememberMe}
           onToggle={setRememberMe}
         />
-        <TouchableOpacity activeOpacity={0.7}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={onForgotPassword}
+          testID="forgot-password-button"
+          accessibilityRole="button"
+          accessibilityLabel="Forgot password?"
+        >
           <Text style={styles.forgotPasswordText}>Forgot password?</Text>
         </TouchableOpacity>
       </View>
